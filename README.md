@@ -1,6 +1,6 @@
 # Amdox | Executive Talent Protocol
 
-![Amdox Banner](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop)
+![Amdox Banner](public/preview.png)
 
 > **"Architecting the future of professional ascension."**
 

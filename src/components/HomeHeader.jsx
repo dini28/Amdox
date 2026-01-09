@@ -56,13 +56,13 @@ const HomeHeader = () => {
                     to="/dashboard"
                     className="group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2"
                 >
-                    Job Seeker
+                    Login
                 </Link>
                 <Link
                     to="/employer"
                     className="group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2"
                 >
-                    Employer
+                    Register
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
 
