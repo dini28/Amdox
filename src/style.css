@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+    --primary: #16a34a;
+    --secondary: #dcfce7;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: #0f172a;
+    font-family: 'Electrolize', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.outline-text {
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+}
+
+.dark .outline-text {
+    -webkit-text-stroke: 2px white;
+    color: transparent;
+}
+
+/* Ensure pointer cursor on interactive elements */
+button,
+a,
+[role="button"] {
+    cursor: pointer;
+}

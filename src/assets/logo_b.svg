@@ -1,0 +1,18 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="40 40 120 120"
+  width="100%"
+  height="100%"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <path
+    d="M 40 160 L 90 40 L 115 40 L 80 120 L 130 120 L 120 145 L 55 145 L 40 160 Z"
+    fill="#000000"
+  />
+
+  <path
+    d="M 105 40 L 160 160 L 135 160 L 95 70 L 105 40 Z"
+    fill="#000000"
+    opacity="0.9"
+  />
+</svg>
