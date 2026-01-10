@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
 
             <main className={cn(
                 "transition-all duration-500 min-h-screen flex flex-col",
-                !isLandingPage && "lg:ml-80"
+                !isLandingPage && "lg:ml-64"
             )}>
                 <div className="flex-1">
                     <AnimatePresence mode="wait">

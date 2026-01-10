@@ -152,7 +152,7 @@ const Header = () => {
                         <img className='w-10 h-10' src={logo_b} alt="Logo" />
                         <div className="flex flex-col leading-none">
                             <span className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Iceland' }}>amdox</span>
-                            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Careers</span>
+                            <span className="text-[10px] text-center font-semibold text-gray-500 uppercase tracking-wider">Careers</span>
                         </div>
                     </Link>
 

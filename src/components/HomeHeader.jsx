@@ -53,14 +53,14 @@ const HomeHeader = () => {
             {/* Right Side Actions */}
             <div className="flex items-center gap-4">
                 <Link
-                    to="/dashboard"
-                    className="group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2"
+                    to="/login"
+                    className="hidden lg:flex group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all items-center gap-2"
                 >
                     Login
                 </Link>
                 <Link
-                    to="/employer"
-                    className="group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all flex items-center gap-2"
+                    to="/register"
+                    className="hidden lg:flex group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all items-center gap-2"
                 >
                     Register
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -92,9 +92,17 @@ const HomeHeader = () => {
                         <Link
                             to="/login"
                             onClick={() => setShowMobileMenu(false)}
-                            className="text-center text-sm font-semibold text-gray-900 hover:text-green-600 py-2"
+                            className="w-full text-center py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-all"
                         >
-                            Sign In
+                            Login
+                        </Link>
+                        <Link
+                            to="/register"
+                            onClick={() => setShowMobileMenu(false)}
+                            className="w-full text-center py-2.5 rounded-lg bg-gray-900 text-sm font-semibold text-white hover:bg-green-600 transition-all flex items-center justify-center gap-2"
+                        >
+                            Register
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
                 </div>

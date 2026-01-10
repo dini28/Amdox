@@ -72,10 +72,12 @@ const HomeHero = () => {
                         <div className="relative z-10 grid grid-cols-2 gap-4">
                             <div className="space-y-4 translate-y-8">
                                 <div className="p-6 bg-white rounded-2xl shadow-xl border border-gray-100">
-                                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
-                                        <TrendingUp className="w-5 h-5" />
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-4 text-green-600">
+                                            <TrendingUp className="w-5 h-5" />
+                                        </div>
+                                        <div className="font-bold text-3xl text-gray-900 mb-1">12.5K+</div>
                                     </div>
-                                    <div className="font-bold text-2xl text-gray-900 mb-1">12.5K+</div>
                                     <div className="font-medium text-gray-900">Active Job Listings</div>
                                     <div className="text-sm text-gray-500">Across all industries</div>
                                 </div>

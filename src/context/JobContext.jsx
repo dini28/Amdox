@@ -1,26 +1,37 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { jobs as initialJobs, userProfile as initialProfile } from '../data/mockData';
+import { useAuth } from './AuthContext';
 
 const JobContext = createContext(undefined);
 
 export const JobProvider = ({ children }) => {
+    const { user: authUser, isAuthenticated } = useAuth();
     const [jobs, setJobs] = useState(initialJobs);
-    const [user, setUser] = useState(() => {
-        const saved = localStorage.getItem('user_profile');
-        const isLoggedIn = localStorage.getItem('user_is_logged_in') === 'true';
-        const role = localStorage.getItem('user_role') || 'seeker';
-        const profile = saved ? JSON.parse(saved) : initialProfile;
-        return { ...profile, isLoggedIn, role };
-    });
+
+    // Merge auth user with profile data if needed, or just use authUser
+    // For now, we'll keep the mock profile structure but prefer auth data
+    const [user, setUser] = useState(initialProfile);
+
+    // Sync auth user to local state when it changes
+    useEffect(() => {
+        if (authUser) {
+            setUser(prev => ({
+                ...prev,
+                ...authUser,
+                isLoggedIn: true,
+                role: authUser.role
+            }));
+        } else {
+            // Reset to initial profile but logged out
+            setUser({ ...initialProfile, isLoggedIn: false, role: 'seeker' });
+        }
+    }, [authUser]);
+
     const [isDarkMode, setIsDarkMode] = useState(() => {
         return localStorage.getItem('theme') === 'dark' ||
             (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     });
     const [notifications, setNotifications] = useState(initialProfile.notifications);
-
-    useEffect(() => {
-        localStorage.setItem('user_profile', JSON.stringify(user));
-    }, [user]);
 
     useEffect(() => {
         if (isDarkMode) {
@@ -35,11 +46,11 @@ export const JobProvider = ({ children }) => {
     const toggleTheme = () => setIsDarkMode(prev => !prev);
 
     const applyToJob = (jobId) => {
-        if (user.appliedJobs.includes(jobId)) return;
+        if (user.appliedJobs && user.appliedJobs.includes(jobId)) return;
 
         setUser(prev => ({
             ...prev,
-            appliedJobs: [...prev.appliedJobs, jobId]
+            appliedJobs: [...(prev.appliedJobs || []), jobId]
         }));
 
         const newNotif = {
@@ -53,26 +64,15 @@ export const JobProvider = ({ children }) => {
 
     const saveJob = (jobId) => {
         setUser(prev => {
-            const isSaved = prev.savedJobs.includes(jobId);
+            const currentSaved = prev.savedJobs || [];
+            const isSaved = currentSaved.includes(jobId);
             return {
                 ...prev,
                 savedJobs: isSaved
-                    ? prev.savedJobs.filter(id => id !== jobId)
-                    : [...prev.savedJobs, jobId]
+                    ? currentSaved.filter(id => id !== jobId)
+                    : [...currentSaved, jobId]
             };
         });
-    };
-
-    const login = (role) => {
-        setUser(prev => ({ ...prev, role, isLoggedIn: true }));
-        localStorage.setItem('user_is_logged_in', 'true');
-        localStorage.setItem('user_role', role);
-    };
-
-    const logout = () => {
-        setUser(prev => ({ ...prev, isLoggedIn: false }));
-        localStorage.removeItem('user_is_logged_in');
-        localStorage.removeItem('user_role');
     };
 
     const value = useMemo(() => ({
@@ -83,9 +83,7 @@ export const JobProvider = ({ children }) => {
         toggleTheme,
         applyToJob,
         saveJob,
-        setJobs,
-        login,
-        logout
+        setJobs
     }), [jobs, user, notifications, isDarkMode]);
 
     return <JobContext.Provider value={value}>{children}</JobContext.Provider>;

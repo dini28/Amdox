@@ -73,7 +73,7 @@ const Sidebar = () => {
     };
 
     return (
-        <aside className="fixed left-0 top-20 bottom-0 w-72 bg-white border-r border-slate-100 hidden lg:flex flex-col z-40 pb-10">
+        <aside className="fixed left-0 top-20 bottom-0 w-64 bg-white border-r border-slate-100 hidden lg:flex flex-col z-40 pb-10">
 
             {/* Navigation */}
             <div className="flex-1 py-8">
