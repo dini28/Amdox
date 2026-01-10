@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
     Search, Bell, User, Settings,
     FileText, TrendingUp, Clock, Sparkles,
     Command, Plus, CheckCircle, ChevronDown,
     Calendar, Bookmark, Menu, X
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import logo_b from '../assets/logo_b.svg';
 
 const useJobContext = () => ({
@@ -49,6 +50,8 @@ const useJobContext = () => ({
 const Header = () => {
     const { user, notifications } = useJobContext();
     const navigate = useNavigate();
+    const location = useLocation(); // context-aware
+    const isEmployer = ['/employer', '/company-profile', '/post-job'].some(path => location.pathname.startsWith(path));
     const [isScrolled, setIsScrolled] = useState(false);
     // ... rest of state
     const [showNotifications, setShowNotifications] = useState(false);
@@ -99,12 +102,21 @@ const Header = () => {
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    const navItems = [
+    const seekerItems = [
         { label: 'Explore', path: '/explore' },
         { label: 'My Jobs', path: '/dashboard' },
         { label: 'Messages', path: '/messages', badge: 3 },
         { label: 'Elite Pro', path: '/pro', special: true },
     ];
+
+    const employerItems = [
+        { label: 'Employer Hub', path: '/employer' },
+        { label: 'Candidates', path: '/candidates' },
+        { label: 'Post Job', path: '/post-job', special: true },
+        { label: 'Messages', path: '/employer/messages', badge: 12 },
+    ];
+
+    const navItems = isEmployer ? employerItems : seekerItems;
 
     // ... quickActions and userMenuItems (lines 105-118)
     const quickActions = [
@@ -144,20 +156,8 @@ const Header = () => {
                         </div>
                     </Link>
 
-                    {/* Search */}
-                    <div className="hidden md:flex flex-1 max-w-lg">
-                        <div className="relative w-full">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && navigate('/search')}
-                                placeholder="Search jobs, companies..."
-                                className="w-full pl-11 pr-4 py-3 bg-gray-50 text-sm rounded-2xl border border-gray-200 focus:border-green-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-green-500/10 transition-all"
-                            />
-                        </div>
-                    </div>
+                    {/* Spacer */}
+                    <div className="hidden md:flex flex-1" />
 
                     {/* Navigation */}
                     <nav className="hidden lg:flex items-center gap-2">
@@ -299,6 +299,71 @@ const Header = () => {
                     </button>
                 </div>
             </header>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {showMobileMenu && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="fixed top-20 left-0 right-0 bg-white border-b border-gray-200 shadow-xl overflow-hidden lg:hidden z-40"
+                    >
+                        <div className="p-6 space-y-4">
+                            {/* User Info Mobile */}
+                            <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg shadow-green-500/20">
+                                    <span className="text-white font-bold text-lg">{user.name.charAt(0)}</span>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-bold text-gray-900">{user.name}</p>
+                                    <p className="text-xs text-gray-500">{user.role}</p>
+                                </div>
+                            </div>
+
+                            {/* Nav Items */}
+                            <div className="space-y-2">
+                                {navItems.map((item) => (
+                                    <Link
+                                        key={item.path}
+                                        to={item.path}
+                                        onClick={() => {
+                                            setActiveNav(item.path);
+                                            setShowMobileMenu(false);
+                                        }}
+                                        className={`flex items-center justify-between p-4 rounded-xl transition-all ${activeNav === item.path
+                                            ? 'bg-green-50 text-green-700 font-bold border border-green-200'
+                                            : 'bg-white text-gray-600 font-semibold border border-gray-100 hover:bg-gray-50'
+                                            }`}
+                                    >
+                                        <span>{item.label}</span>
+                                        {item.badge && (
+                                            <span className="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-700 rounded-full">
+                                                {item.badge}
+                                            </span>
+                                        )}
+                                        {item.special && (
+                                            <Sparkles className="w-4 h-4 text-green-600" />
+                                        )}
+                                    </Link>
+                                ))}
+                            </div>
+
+                            {/* Quick Actions Grid */}
+                            <div className="grid grid-cols-2 gap-3 pt-2">
+                                <Link to="/settings" onClick={() => setShowMobileMenu(false)} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-bold text-gray-600 hover:bg-gray-100">
+                                    <Settings className="w-4 h-4" />
+                                    <span>Settings</span>
+                                </Link>
+                                <button className="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-50 border border-red-100 text-sm font-bold text-red-600 hover:bg-red-100">
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Command Palette */}
             {showCommandPalette && (
