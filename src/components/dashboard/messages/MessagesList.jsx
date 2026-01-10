@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, MoreVertical, Reply, CheckCircle2 } from 'lucide-react';
+import { Search, MoreVertical, Reply, CheckCircle2, ArrowLeft } from 'lucide-react';
 
 const seekerMockMessages = [
     {
@@ -71,16 +71,13 @@ const MessagesList = ({ mode = 'seeker' }) => {
     const [selectedId, setSelectedId] = useState(null);
     const messages = mode === 'employer' ? employerMockMessages : seekerMockMessages;
 
-    // Select first message of the active list if none selected (optional, but good UX)
-    // useEffect(() => { if(messages.length > 0 && !selectedId) setSelectedId(messages[0].id) }, [mode]);
-
     const activeMessage = messages.find(m => m.id === selectedId);
 
     return (
         <div className="flex flax-col lg:flex-row gap-8 min-h-[600px] border border-slate-200 rounded-[32px] bg-white overflow-hidden shadow-sm">
 
             {/* Conversations Sidebar */}
-            <div className="w-full lg:w-96 border-b lg:border-b-0 lg:border-r border-slate-100 bg-slate-50/50 flex flex-col">
+            <div className={`w-full lg:w-96 border-b lg:border-b-0 lg:border-r border-slate-100 bg-slate-50/50 flex flex-col ${selectedId ? 'hidden lg:flex' : 'flex'}`}>
                 <div className="p-6 border-b border-slate-200">
                     <div className="relative flex items-center bg-white border border-slate-200 rounded-xl shadow-sm focus-within:ring-2 focus-within:ring-green-600 transition-all">
                         <Search className="absolute left-4 w-4 h-4 text-slate-400" />
@@ -120,12 +117,18 @@ const MessagesList = ({ mode = 'seeker' }) => {
             </div>
 
             {/* Chat Area */}
-            <div className="hidden lg:flex flex-1 flex-col bg-slate-50">
+            <div className={`flex-1 flex-col bg-slate-50 ${selectedId ? 'flex' : 'hidden lg:flex'}`}>
                 {activeMessage ? (
                     <>
                         {/* Chat Header */}
                         <div className="p-6 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm">
                             <div className="flex items-center gap-4">
+                                <button
+                                    onClick={() => setSelectedId(null)}
+                                    className="lg:hidden p-2 -ml-2 hover:bg-slate-50 rounded-xl text-slate-400"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                </button>
                                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg ${activeMessage.bg}`}>{activeMessage.avatar}</div>
                                 <div>
                                     <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">{activeMessage.sender}</h3>

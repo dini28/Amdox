@@ -56,7 +56,7 @@ const NotificationsList = () => {
 
     return (
         <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden min-h-[600px]">
-            <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div className="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div>
                     <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">System Logs</h3>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Activity & Alerts</p>
