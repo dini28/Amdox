@@ -3,16 +3,17 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import job from '../../assets/Home/job.jpg';
 import company from '../../assets/Home/company.jpg';
+import Button from '../Button';
 
 const HomeHero = () => {
     const navigate = useNavigate();
 
     const handleExploreClick = () => {
-        navigate('/explore');
+        navigate('/dashboard/seeker');
     };
 
     const handleEmployerClick = () => {
-        navigate('/employer');
+        navigate('/dashboard/employer');
     };
 
     return (
@@ -45,20 +46,22 @@ const HomeHero = () => {
 
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
-                            <button
+                            <Button
                                 onClick={handleExploreClick}
-                                className="group px-8 py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20 flex items-center gap-3 min-w-[200px] justify-center"
+                                size="xl"
+                                icon={ArrowRight}
                             >
                                 Browse Opportunities
-                                <ArrowRight className="w-5 h-5" />
-                            </button>
+                            </Button>
 
-                            <button
+                            <Button
                                 onClick={handleEmployerClick}
-                                className="px-8 py-4 bg-white border-2 border-gray-300 text-gray-800 font-semibold rounded-lg hover:border-green-600 hover:text-green-600 transition-colors min-w-[200px]"
+                                variant="outline"
+                                size="xl"
+                                icon={ArrowRight}
                             >
                                 Post a Job
-                            </button>
+                            </Button>
                         </div>
                     </div>
 

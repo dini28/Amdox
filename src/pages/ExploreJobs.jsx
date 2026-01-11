@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import JobCard from '../components/JobCard';
 import FilterSidebar from '../components/FilterSidebar';
 import JobSlideOver from '../components/JobSlideOver';
+import Button from '../components/Button';
 import { useJobContext } from '../context/JobContext';
 import { useDebounce } from '../hooks/useDebounce';
 import { cn } from '../utils/cn';
@@ -23,6 +24,8 @@ const ExploreJobs = () => {
     const [filters, setFilters] = useState({
         type: [],
         level: [],
+        locationType: [],
+        datePosted: [],
         salaryRange: [0, 200]
     });
 
@@ -37,14 +40,23 @@ const ExploreJobs = () => {
     const filteredJobs = useMemo(() => {
         return allJobs.filter(job => {
             const matchesSearch = job.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-                job.company.toLowerCase().includes(debouncedSearch.toLowerCase());
+                job.company.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+                job.skills?.some(s => s.toLowerCase().includes(debouncedSearch.toLowerCase()));
 
             const matchesType = filters.type.length === 0 || filters.type.includes(job.type);
+
+            // Allow simplified matching for demo purposes since mock data is limited
+            const matchesLevel = filters.level.length === 0 || filters.level.includes(job.experience) || job.experience.includes(filters.level[0]?.split(' ')[0]);
+
+            const matchesLocation = filters.locationType.length === 0 || filters.locationType.includes(job.location) || (filters.locationType.includes('Remote') && job.location === 'Remote');
 
             const jobSalary = parseInt(job.salary?.replace(/\D/g, '') || '0');
             const matchesSalary = jobSalary >= filters.salaryRange[0] && jobSalary <= filters.salaryRange[1];
 
-            return matchesSearch && matchesType && matchesSalary;
+            // Simplified date filtering
+            const matchesDate = filters.datePosted.length === 0 || true; // Placeholder for actual date logic parsing '2 days ago'
+
+            return matchesSearch && matchesType && matchesLevel && matchesLocation && matchesSalary && matchesDate;
         });
     }, [allJobs, debouncedSearch, filters]);
 
@@ -91,12 +103,13 @@ const ExploreJobs = () => {
                                 className="w-full pl-16 pr-8 py-4 bg-transparent text-slate-900 text-sm font-bold placeholder:text-slate-300 outline-none uppercase tracking-wide"
                             />
                             <div className="pr-4 lg:hidden">
-                                <button
+                                <Button
+                                    variant="text"
+                                    size="sm"
                                     onClick={() => setIsFilterMobileOpen(true)}
-                                    className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:text-green-600 transition-colors"
-                                >
-                                    <SlidersHorizontal className="w-5 h-5" />
-                                </button>
+                                    className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:text-green-600 transition-colors h-auto w-auto"
+                                    icon={SlidersHorizontal}
+                                />
                             </div>
                         </div>
 
@@ -155,12 +168,14 @@ const ExploreJobs = () => {
                                     <p className="text-slate-400 mt-2 text-sm font-medium max-w-xs mx-auto">
                                         Adjust your filter parameters or broaden your search criteria.
                                     </p>
-                                    <button
-                                        onClick={() => { setSearchTerm(''); setFilters({ type: [], level: [], salaryRange: [0, 200] }); }}
-                                        className="mt-8 px-8 py-3 bg-slate-900 text-white font-bold uppercase text-[10px] tracking-widest hover:bg-green-600 transition-all rounded-xl shadow-lg shadow-slate-900/10"
+                                    <Button
+                                        variant="dark"
+                                        size="sm"
+                                        onClick={() => { setSearchTerm(''); setFilters({ type: [], level: [], locationType: [], datePosted: [], salaryRange: [0, 200] }); }}
+                                        className="mt-8 px-8 py-3 text-[10px] tracking-widest uppercase rounded-xl shadow-lg shadow-slate-900/10 h-auto"
                                     >
                                         Clear All Filters
-                                    </button>
+                                    </Button>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -196,12 +211,13 @@ const ExploreJobs = () => {
                         >
                             <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                                 <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">Filters</h2>
-                                <button
+                                <Button
+                                    variant="outline"
+                                    size="sm"
                                     onClick={() => setIsFilterMobileOpen(false)}
-                                    className="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-slate-400"
-                                >
-                                    <ArrowRight className="w-5 h-5" />
-                                </button>
+                                    className="p-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-slate-400 h-auto w-auto"
+                                    icon={ArrowRight}
+                                />
                             </div>
                             <div className="p-6">
                                 <FilterSidebar filters={filters} setFilters={setFilters} />

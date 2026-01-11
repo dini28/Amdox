@@ -1,4 +1,4 @@
-const DashboardHeader = ({ title, highlight, badges, description, actions, children }) => {
+const DashboardHeader = ({ title, highlight, badges = [], description, actions, children }) => {
     return (
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-slate-200 pb-10 pt-16">
             <div>

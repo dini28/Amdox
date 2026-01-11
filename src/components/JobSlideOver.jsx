@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Briefcase, Clock, DollarSign, Building2, Globe, Users, CheckCircle2, ArrowRight, ShieldCheck, Share2, Bookmark } from 'lucide-react';
+import { X, MapPin, Briefcase, Clock, DollarSign, Share2, Bookmark, ShieldCheck, ArrowRight } from 'lucide-react';
 import { cn } from '../utils/cn';
+import Button from './Button';
 
 const DetailItem = ({ icon: Icon, label, value }) => (
     <div className="p-6 bg-slate-50/50 border border-slate-100/50 flex flex-col gap-3 group hover:bg-green-50/30 transition-all rounded-2xl">
@@ -45,24 +46,29 @@ const JobSlideOver = ({ job, isOpen, onClose, isApplied, isSaved, onApply, onSav
                                         </span>
                                     </div>
                                     <div className="flex gap-4">
-                                        <button
+                                        <Button
                                             onClick={onSave}
+                                            variant="outline"
                                             className={cn(
-                                                "p-3 bg-white border border-slate-200 rounded-2xl transition-all shadow-sm",
+                                                "p-3 rounded-2xl shadow-sm h-auto",
                                                 isSaved ? "text-green-600 border-green-600" : "text-slate-400 hover:text-green-600 hover:border-green-600"
                                             )}
                                         >
                                             <Bookmark className={cn("w-5 h-5", isSaved && "fill-current")} />
-                                        </button>
-                                        <button className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-400 hover:text-green-600 hover:border-green-600 transition-all shadow-sm">
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            className="p-3 rounded-2xl shadow-sm text-slate-400 hover:text-green-600 hover:border-green-600 h-auto"
+                                        >
                                             <Share2 className="w-5 h-5" />
-                                        </button>
-                                        <button
+                                        </Button>
+                                        <Button
                                             onClick={onClose}
-                                            className="p-3 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-all shadow-lg shadow-green-600/20"
+                                            variant="primary"
+                                            className="p-3 rounded-2xl shadow-lg shadow-green-600/20 h-auto"
                                         >
                                             <X className="w-6 h-6" />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
 
@@ -128,16 +134,20 @@ const JobSlideOver = ({ job, isOpen, onClose, isApplied, isSaved, onApply, onSav
 
                             {/* Action Footer */}
                             <div className="p-8 sm:p-12 border-t border-slate-100 bg-slate-50/50">
-                                <button
+                                <Button
                                     onClick={!isApplied ? onApply : undefined}
+                                    size="xl"
+                                    fullWidth
+                                    variant="primary"
+                                    disabled={isApplied}
                                     className={cn(
-                                        "w-full py-7 text-white text-xl font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-6 group rounded-2xl shadow-xl",
-                                        isApplied ? "bg-slate-300 cursor-default" : "bg-green-600 hover:bg-green-700 shadow-green-600/30"
+                                        "py-7 text-xl shadow-xl h-auto",
+                                        isApplied ? "bg-slate-300 pointer-events-none border-none text-white/80" : "shadow-green-600/30"
                                     )}
+                                    icon={!isApplied ? ArrowRight : undefined}
                                 >
                                     {isApplied ? 'Application Pending' : 'Apply For Protocol'}
-                                    {!isApplied && <ArrowRight className="w-8 h-8 group-hover:translate-x-3 transition-transform duration-500" />}
-                                </button>
+                                </Button>
                                 <p className="text-center mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
                                     Secure Connection / Status Verified / Protocol 2.4
                                 </p>

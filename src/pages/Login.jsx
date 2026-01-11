@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Briefcase, ArrowRight, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import Button from '../components/Button';
 import logo_b from '../assets/logo_b.svg'
 import login_right from '../assets/login_right.jpg'
 import user1 from '../assets/User/user1.jpg'
@@ -31,9 +32,9 @@ const Login = () => {
         try {
             await login(formData.email, formData.password, role);
             if (role === 'employer') {
-                navigate('/employer');
+                navigate('/dashboard/employer');
             } else {
-                navigate('/dashboard');
+                navigate('/dashboard/seeker');
             }
         } catch (error) {
             console.error("Login failed", error);
@@ -67,26 +68,30 @@ const Login = () => {
 
                     {/* Role Toggle */}
                     <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
-                        <button
+                        <Button
                             onClick={() => setRole('seeker')}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${role === 'seeker'
+                            variant={role === 'seeker' ? 'text' : 'text'}
+                            className={`flex-1 justify-center rounded-xl text-sm font-bold ${role === 'seeker'
                                 ? 'bg-white text-emerald-950 shadow-md shadow-slate-200/50 ring-1 ring-black/5'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100/50'
                                 }`}
+                            icon={User}
+                            iconPosition="left"
                         >
-                            <User className={`w-4 h-4 ${role === 'seeker' ? 'text-emerald-500' : 'text-slate-400'}`} />
                             Job Seeker
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={() => setRole('employer')}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${role === 'employer'
+                            variant={role === 'employer' ? 'text' : 'text'}
+                            className={`flex-1 justify-center rounded-xl text-sm font-bold ${role === 'employer'
                                 ? 'bg-white text-emerald-950 shadow-md shadow-slate-200/50 ring-1 ring-black/5'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100/50'
                                 }`}
+                            icon={Briefcase}
+                            iconPosition="left"
                         >
-                            <Briefcase className={`w-4 h-4 ${role === 'employer' ? 'text-emerald-500' : 'text-slate-400'}`} />
                             Employer
-                        </button>
+                        </Button>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -130,33 +135,42 @@ const Login = () => {
                             <a href="#" className="font-bold text-emerald-600 hover:text-emerald-700 transition-colors">Forgot Password?</a>
                         </div>
 
-                        <button
+                        <Button
                             type="submit"
-                            disabled={isLoading}
-                            className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 hover:shadow-xl hover:shadow-emerald-600/30 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center gap-2 group mt-2"
+                            loading={isLoading}
+                            fullWidth
+                            size="xl"
+                            variant="primary"
+                            className="mt-2 rounded-xl"
+                            icon={!isLoading ? ArrowRight : null}
                         >
-                            <span>{isLoading ? 'Signing In...' : 'Sign In'}</span>
-                            {!isLoading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
-                        </button>
+                            {isLoading ? 'Signing In...' : 'Sign In'}
+                        </Button>
                     </form>
 
                     <div className="pt-6 border-t border-slate-100 text-center lg:text-left lg:hidden">
                         <p className="text-sm text-slate-500 mb-6">Don't have an account?</p>
                         <div className="grid grid-cols-2 gap-4">
-                            <Link
+                            <Button
                                 to="/register/seeker"
-                                className="py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 hover:text-emerald-900 hover:border-emerald-200 transition-all flex items-center justify-center gap-2 group"
+                                variant="outline"
+                                size="sm"
+                                className="justify-center border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-emerald-900 hover:border-emerald-200"
+                                icon={User}
+                                iconPosition="left"
                             >
-                                <User className="w-4 h-4 text-slate-400 group-hover:text-emerald-500 transition-colors" />
                                 Job Seeker
-                            </Link>
-                            <Link
+                            </Button>
+                            <Button
                                 to="/register/employer"
-                                className="py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 hover:text-emerald-900 hover:border-emerald-200 transition-all flex items-center justify-center gap-2 group"
+                                variant="outline"
+                                size="sm"
+                                className="justify-center border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-emerald-900 hover:border-emerald-200"
+                                icon={Briefcase}
+                                iconPosition="left"
                             >
-                                <Briefcase className="w-4 h-4 text-slate-400 group-hover:text-emerald-500 transition-colors" />
                                 Employer
-                            </Link>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -201,20 +215,24 @@ const Login = () => {
                     <div className="pt-8 border-t border-emerald-900/50">
                         <p className="text-sm text-emerald-200/80 mb-6">New to Amdox? Create an account</p>
                         <div className="grid grid-cols-2 gap-4">
-                            <Link
+                            <Button
                                 to="/register/seeker"
-                                className="py-3 px-4 rounded-xl border border-emerald-800 bg-emerald-900/30 text-emerald-100 font-bold text-xs hover:bg-emerald-800/50 hover:text-white transition-all flex items-center justify-center gap-2 group backdrop-blur-sm"
+                                variant="text"
+                                className="justify-center border border-emerald-800 bg-emerald-900/30 text-emerald-100 hover:bg-emerald-800/50 hover:text-white backdrop-blur-sm"
+                                icon={User}
+                                iconPosition="left"
                             >
-                                <User className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors" />
                                 Job Seeker
-                            </Link>
-                            <Link
+                            </Button>
+                            <Button
                                 to="/register/employer"
-                                className="py-3 px-4 rounded-xl border border-emerald-800 bg-emerald-900/30 text-emerald-100 font-bold text-xs hover:bg-emerald-800/50 hover:text-white transition-all flex items-center justify-center gap-2 group backdrop-blur-sm"
+                                variant="text"
+                                className="justify-center border border-emerald-800 bg-emerald-900/30 text-emerald-100 hover:bg-emerald-800/50 hover:text-white backdrop-blur-sm"
+                                icon={Briefcase}
+                                iconPosition="left"
                             >
-                                <Briefcase className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors" />
                                 Employer
-                            </Link>
+                            </Button>
                         </div>
                     </div>
 

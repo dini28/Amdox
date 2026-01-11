@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Briefcase, User, MapPin, Mail, Lock, Phone, Linkedin, Globe, GraduationCap, Award } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import Button from '../components/Button';
 
 const RegisterJobSeeker = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const RegisterJobSeeker = () => {
         setIsLoading(true);
         try {
             await registerSeeker(formData);
-            navigate('/dashboard');
+            navigate('/dashboard/seeker');
         } catch (error) {
             console.error("Registration failed", error);
             // Handle error state here
@@ -284,17 +285,16 @@ const RegisterJobSeeker = () => {
                                     <label className="text-xs font-semibold text-slate-700 ml-1">Work Preference</label>
                                     <div className="flex gap-2">
                                         {['remote', 'hybrid', 'onsite'].map(type => (
-                                            <button
+                                            <Button
                                                 key={type}
                                                 type="button"
                                                 onClick={() => setFormData(p => ({ ...p, remotePreference: type }))}
-                                                className={`flex-1 py-3 px-2 rounded-xl text-sm font-bold border transition-all ${formData.remotePreference === type
-                                                        ? 'bg-emerald-600 text-white border-emerald-600'
-                                                        : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
-                                                    }`}
+                                                variant={formData.remotePreference === type ? 'primary' : 'outline'}
+                                                className={`flex-1 justify-center ${formData.remotePreference !== type ? 'bg-slate-50 border-slate-200 text-slate-500' : ''}`}
+                                                size="sm"
                                             >
                                                 {type.charAt(0).toUpperCase() + type.slice(1)}
-                                            </button>
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>
@@ -302,13 +302,15 @@ const RegisterJobSeeker = () => {
                         </div>
 
                         <div className="pt-4">
-                            <button
+                            <Button
                                 type="submit"
-                                disabled={isLoading}
-                                className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                                loading={isLoading}
+                                fullWidth
+                                size="xl"
+                                variant="primary"
                             >
                                 {isLoading ? 'Creating Account...' : 'Create Account'}
-                            </button>
+                            </Button>
                             <p className="text-center mt-6 text-sm text-slate-500">
                                 Already have an account? <Link to="/login" className="text-emerald-600 font-bold hover:underline">Sign In</Link>
                             </p>

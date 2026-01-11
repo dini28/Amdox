@@ -51,7 +51,7 @@ const Header = () => {
     const { user, notifications } = useJobContext();
     const navigate = useNavigate();
     const location = useLocation(); // context-aware
-    const isEmployer = ['/employer', '/company-profile', '/post-job'].some(path => location.pathname.startsWith(path));
+    const isEmployer = ['/dashboard/employer', '/profile/employer', '/employer', '/candidates'].some(path => location.pathname.startsWith(path));
     const [isScrolled, setIsScrolled] = useState(false);
     // ... rest of state
     const [showNotifications, setShowNotifications] = useState(false);
@@ -103,34 +103,33 @@ const Header = () => {
     const unreadCount = notifications.filter(n => !n.read).length;
 
     const seekerItems = [
-        { label: 'Explore', path: '/explore' },
-        { label: 'My Jobs', path: '/dashboard' },
-        { label: 'Messages', path: '/messages', badge: 3 },
-        { label: 'Elite Pro', path: '/pro', special: true },
+        { label: 'Explore', path: '/explorejobs' },
+        { label: 'My Jobs', path: '/dashboard/seeker' },
+        { label: 'Messages', path: '/messages/seeker', badge: 3 }
     ];
 
     const employerItems = [
-        { label: 'Employer Hub', path: '/employer' },
+        { label: 'Employer Hub', path: '/dashboard/employer' },
         { label: 'Candidates', path: '/candidates' },
-        { label: 'Post Job', path: '/post-job', special: true },
-        { label: 'Messages', path: '/employer/messages', badge: 12 },
+        { label: 'Post Job', path: '/employer/postjob', special: true },
+        { label: 'Messages', path: '/messages/employer', badge: 12 },
     ];
 
     const navItems = isEmployer ? employerItems : seekerItems;
 
     // ... quickActions and userMenuItems (lines 105-118)
     const quickActions = [
-        { icon: Plus, label: 'New Application', shortcut: 'N', path: '/new-application' },
-        { icon: Search, label: 'Search Jobs', shortcut: '/', path: '/search' },
-        { icon: FileText, label: 'Upload Resume', shortcut: 'U', path: '/upload-resume' },
-        { icon: Calendar, label: 'Schedule Interview', shortcut: 'I', path: '/schedule' },
+        { icon: Plus, label: 'New Application', shortcut: 'N', path: '/explorejobs' },
+        { icon: Search, label: 'Search Jobs', shortcut: '/', path: '/explorejobs' },
+        { icon: FileText, label: 'Upload Resume', shortcut: 'U', path: '/profile/seeker' },
+        { icon: Calendar, label: 'Schedule Interview', shortcut: 'I', path: '/messages/seeker' },
     ];
 
     const userMenuItems = [
-        { icon: User, label: 'My Profile', path: '/profile' },
-        { icon: FileText, label: 'Applications', path: '/applications' },
+        { icon: User, label: 'My Profile', path: isEmployer ? '/profile/employer' : '/profile/seeker' },
+        { icon: FileText, label: 'Applications', path: isEmployer ? '/dashboard/employer' : '/dashboard/seeker' },
         { icon: Bookmark, label: 'Saved Jobs', path: '/saved' },
-        { icon: TrendingUp, label: 'Career Insights', path: '/insights' },
+        { icon: TrendingUp, label: 'Career Insights', path: '/dashboard/seeker' },
         { icon: Settings, label: 'Settings', path: '/settings' },
     ];
 
@@ -145,14 +144,14 @@ const Header = () => {
 
     return (
         <>
-            <header className={`fixed top-0 left-0 right-0 h-20 flex items-center justify-between px-6 md:px-12 z-50 transition-all ${isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm' : 'bg-white'}`}>
-                <div className="flex items-center gap-8 flex-1">
+            <header className={`fixed top-0 left-0 right-0 h-20 flex items-center justify-between px-4 md:px-8 lg:px-12 z-50 transition-all ${isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm' : 'bg-white'}`}>
+                <div className="flex items-center gap-4 md:gap-8 flex-1">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-1 group">
-                        <img className='w-10 h-10' src={logo_b} alt="Logo" />
+                        <img className='w-8 h-8 md:w-10 md:h-10' src={logo_b} alt="Logo" />
                         <div className="flex flex-col leading-none">
-                            <span className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Iceland' }}>amdox</span>
-                            <span className="text-[10px] text-center font-semibold text-gray-500 uppercase tracking-wider">Careers</span>
+                            <span className="text-2xl md:text-3xl font-bold text-gray-900" style={{ fontFamily: 'Iceland' }}>amdox</span>
+                            <span className="text-[8px] md:text-[10px] text-center font-semibold text-gray-500 uppercase tracking-wider">Careers</span>
                         </div>
                     </Link>
 
@@ -182,12 +181,12 @@ const Header = () => {
                     </nav>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4">
                     {/* Notifications */}
                     <div className="relative" ref={notifRef}>
                         <button
                             onClick={() => setShowNotifications(!showNotifications)}
-                            className="relative p-3 rounded-xl border border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-600 hover:text-green-600 transition-all"
+                            className="relative p-2 md:p-3 rounded-xl border border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-600 hover:text-green-600 transition-all"
                         >
                             <Bell className="w-5 h-5" />
                             {unreadCount > 0 && (
@@ -198,7 +197,7 @@ const Header = () => {
                         </button>
 
                         {showNotifications && (
-                            <div className="absolute right-0 mt-4 w-96 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden">
+                            <div className="absolute right-0 mt-4 w-80 md:w-96 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
                                 <div className="p-6 border-b border-gray-100 bg-gradient-to-br from-gray-50 to-white">
                                     <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Notifications</h3>
                                     <p className="text-xs text-gray-500 mt-1">{unreadCount} unread</p>
@@ -237,7 +236,7 @@ const Header = () => {
                     </div>
 
                     {/* User Menu */}
-                    <div className="relative" ref={userMenuRef}>
+                    <div className="relative hidden md:block" ref={userMenuRef}>
                         <button
                             onClick={() => setShowUserMenu(!showUserMenu)}
                             className="flex items-center gap-3 group"
@@ -252,7 +251,7 @@ const Header = () => {
                         </button>
 
                         {showUserMenu && (
-                            <div className="absolute right-0 mt-4 w-80 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden">
+                            <div className="absolute right-0 mt-4 w-80 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50">
                                 <div className="p-6 bg-gradient-to-br from-green-500 to-green-600 text-white">
                                     <p className="text-xl font-bold">{user.name}</p>
                                     <p className="text-sm text-green-100 mt-2">{user.role}</p>
@@ -290,10 +289,10 @@ const Header = () => {
                         )}
                     </div>
 
-                    {/* Mobile Menu */}
+                    {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setShowMobileMenu(!showMobileMenu)}
-                        className="p-3 rounded-xl border border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-600 hover:text-green-600 lg:hidden transition-all"
+                        className="p-2 md:p-3 rounded-xl border border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-600 hover:text-green-600 lg:hidden transition-all"
                     >
                         {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
@@ -307,18 +306,18 @@ const Header = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="fixed top-20 left-0 right-0 bg-white border-b border-gray-200 shadow-xl overflow-hidden lg:hidden z-40"
+                        transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                        className="fixed top-20 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-2xl overflow-hidden lg:hidden z-40"
                     >
-                        <div className="p-6 space-y-4">
+                        <div className="p-4 space-y-4 max-h-[80vh] overflow-y-auto">
                             {/* User Info Mobile */}
-                            <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                            <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg shadow-green-500/20">
                                     <span className="text-white font-bold text-lg">{user.name.charAt(0)}</span>
                                 </div>
                                 <div>
-                                    <p className="text-sm font-bold text-gray-900">{user.name}</p>
-                                    <p className="text-xs text-gray-500">{user.role}</p>
+                                    <p className="text-sm font-bold text-slate-900">{user.name}</p>
+                                    <p className="text-xs text-slate-500">{user.role}</p>
                                 </div>
                             </div>
 
@@ -334,7 +333,7 @@ const Header = () => {
                                         }}
                                         className={`flex items-center justify-between p-4 rounded-xl transition-all ${activeNav === item.path
                                             ? 'bg-green-50 text-green-700 font-bold border border-green-200'
-                                            : 'bg-white text-gray-600 font-semibold border border-gray-100 hover:bg-gray-50'
+                                            : 'bg-white text-slate-600 font-semibold border border-slate-100 hover:bg-slate-50'
                                             }`}
                                     >
                                         <span>{item.label}</span>

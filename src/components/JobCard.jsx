@@ -71,8 +71,13 @@ const JobCard = ({ job, index, viewMode, onClick, isApplied }) => {
 
             {/* Tags - pushed to bottom in grid */}
             <div className="mt-auto flex flex-wrap gap-2 z-10 relative">
-                {job.tags?.slice(0, 3).map(tag => (
-                    <span key={tag} className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-semibold rounded-lg border border-gray-100 group-hover:border-green-100 group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
+                {job.urgent && (
+                    <span className="px-2.5 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-lg border border-red-100 uppercase tracking-wide">
+                        Urgent Hiring
+                    </span>
+                )}
+                {(job.skills || job.tags)?.slice(0, 3).map(tag => (
+                    <span key={tag} className="px-2.5 py-1 bg-gray-50 text-gray-600 text-xs font-bold rounded-lg border border-gray-100 group-hover:border-green-100 group-hover:bg-green-50 group-hover:text-green-700 transition-colors uppercase tracking-wide">
                         {tag}
                     </span>
                 ))}

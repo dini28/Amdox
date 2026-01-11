@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
+import Button from './Button';
 import logo_b from '../assets/logo_b.svg';
 
 const HomeHeader = () => {
@@ -15,8 +16,8 @@ const HomeHeader = () => {
     }, []);
 
     const navItems = [
-        { label: 'Explore Jobs', path: '/explore' },
-        { label: 'For Employers', path: '/employer' },
+        { label: 'Find Jobs', path: '/dashboard/seeker' },
+        { label: 'Hire Talent', path: '/dashboard/employer' },
         { label: 'About Us', path: '/about' },
     ];
 
@@ -52,19 +53,23 @@ const HomeHeader = () => {
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-4">
-                <Link
+                <Button
                     to="/login"
-                    className="hidden lg:flex group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all items-center gap-2"
+                    variant="dark"
+                    size="sm"
+                    className="hidden lg:flex"
                 >
                     Login
-                </Link>
-                <Link
+                </Button>
+                <Button
                     to="/register"
-                    className="hidden lg:flex group px-5 py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-all items-center gap-2"
+                    variant="dark"
+                    size="sm"
+                    className="hidden lg:flex"
+                    icon={ArrowRight}
                 >
                     Register
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
+                </Button>
 
                 {/* Mobile Menu Toggle */}
                 <button
@@ -88,22 +93,24 @@ const HomeHeader = () => {
                             {item.label}
                         </Link>
                     ))}
-                    <div className="border-t border-gray-100 pt-4 flex flex-col gap-3">
-                        <Link
+                    <div className="pt-4 flex flex-col gap-4">
+                        <Button
                             to="/login"
+                            variant="dark"
+                            size='lg'
                             onClick={() => setShowMobileMenu(false)}
-                            className="w-full text-center py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-green-600 transition-all"
                         >
                             Login
-                        </Link>
-                        <Link
+                        </Button>
+                        <Button
                             to="/register"
+                            variant="dark"
+                            size='lg'
+                            icon={ArrowRight}
                             onClick={() => setShowMobileMenu(false)}
-                            className="w-full text-center py-2.5 rounded-lg bg-gray-900 text-sm font-semibold text-white hover:bg-green-600 transition-all flex items-center justify-center gap-2"
                         >
                             Register
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
+                        </Button>
                     </div>
                 </div>
             )}

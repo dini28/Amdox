@@ -100,9 +100,25 @@ const FilterSidebar = ({ mobile, onClose, filters, setFilters }) => {
                 <FilterSection
                     title="Employment"
                     icon={Briefcase}
-                    options={['Full-time', 'Contract', 'Remote', 'Freelance']}
+                    options={['Full-time', 'Contract', 'Internship', 'Freelance']}
                     selected={safeFilters.type}
                     onChange={(val) => toggleFilter('type', val)}
+                />
+
+                <FilterSection
+                    title="Location Model"
+                    icon={MapPin}
+                    options={['Remote', 'Onsite', 'Hybrid']}
+                    selected={safeFilters.locationType || []}
+                    onChange={(val) => toggleFilter('locationType', val)}
+                />
+
+                <FilterSection
+                    title="Experience Level"
+                    icon={Sparkles}
+                    options={['Entry Level', 'Mid Level', 'Senior', 'Director']}
+                    selected={safeFilters.level}
+                    onChange={(val) => toggleFilter('level', val)}
                 />
 
                 {/* Salary Range - Interactive */}
@@ -128,6 +144,14 @@ const FilterSidebar = ({ mobile, onClose, filters, setFilters }) => {
                         </div>
                     </div>
                 </div>
+
+                <FilterSection
+                    title="Posted Time"
+                    icon={Clock}
+                    options={['Past 24 Hours', 'Past Week', 'Past Month']}
+                    selected={safeFilters.datePosted || []}
+                    onChange={(val) => toggleFilter('datePosted', val)}
+                />
             </div>
 
             {!mobile && (

@@ -7,6 +7,9 @@ import SeekerStats from '../components/dashboard/seeker/SeekerStats';
 import SeekerBrowse from '../components/dashboard/seeker/SeekerBrowse';
 import SeekerApplications from '../components/dashboard/seeker/SeekerApplications';
 import SeekerProfile from '../components/dashboard/seeker/SeekerProfile';
+import SeekerActivityFeed from '../components/dashboard/seeker/SeekerActivityFeed';
+import SeekerQuickActions from '../components/dashboard/seeker/SeekerQuickActions';
+import SeekerAnalytics from '../components/dashboard/seeker/SeekerAnalytics';
 import { DashboardContainer } from '../components/dashboard/common/DashboardContainer';
 
 const JobSeekerDashboard = () => {
@@ -29,25 +32,39 @@ const JobSeekerDashboard = () => {
             {/* Stats Grid */}
             <SeekerStats appliedCount={appliedJobs.length} />
 
-            {/* Main Content Area */}
-            <div className="min-h-[500px]">
-                <AnimatePresence mode="wait">
-                    {activeTab === 'browse' ? (
-                        <SeekerBrowse
-                            key="browse"
-                            onJobClick={setSelectedJob}
-                        />
-                    ) : activeTab === 'applications' ? (
-                        <SeekerApplications
-                            key="applications"
-                            appliedJobs={appliedJobs}
-                            onJobClick={setSelectedJob}
-                            onInitSearch={() => setActiveTab('browse')}
-                        />
-                    ) : (
-                        <SeekerProfile key="profile" />
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                {/* Main Content Area (2/3) */}
+                <div className="xl:col-span-2 space-y-8">
+                    {activeTab === 'dashboard' && (
+                        <SeekerActivityFeed />
                     )}
-                </AnimatePresence>
+
+                    <div className="min-h-[500px]">
+                        <AnimatePresence mode="wait">
+                            {activeTab === 'browse' ? (
+                                <SeekerBrowse
+                                    key="browse"
+                                    onJobClick={setSelectedJob}
+                                />
+                            ) : activeTab === 'applications' ? (
+                                <SeekerApplications
+                                    key="applications"
+                                    appliedJobs={appliedJobs}
+                                    onJobClick={setSelectedJob}
+                                    onInitSearch={() => setActiveTab('browse')}
+                                />
+                            ) : activeTab === 'profile' ? (
+                                <SeekerProfile key="profile" />
+                            ) : null}
+                        </AnimatePresence>
+                    </div>
+                </div>
+
+                {/* Sidebar Widgets (1/3) */}
+                <div className="space-y-8">
+                    <SeekerAnalytics />
+                    <SeekerQuickActions />
+                </div>
             </div>
 
             <JobSlideOver

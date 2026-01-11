@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Building2, User, Mail, Lock, Globe, MapPin, BadgeCheck, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import Button from '../components/Button';
 
 const RegisterJobLister = () => {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const RegisterJobLister = () => {
         setIsLoading(true);
         try {
             await registerEmployer(formData);
-            navigate('/employer');
+            navigate('/dashboard/employer');
         } catch (error) {
             console.error("Registration failed", error);
         } finally {
@@ -252,13 +253,15 @@ const RegisterJobLister = () => {
                         </div>
 
                         <div className="pt-4">
-                            <button
+                            <Button
                                 type="submit"
-                                disabled={isLoading}
-                                className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                                loading={isLoading}
+                                fullWidth
+                                size="xl"
+                                variant="primary"
                             >
                                 {isLoading ? 'Creating Employer Account...' : 'Create Employer Account'}
-                            </button>
+                            </Button>
                             <p className="text-center mt-6 text-sm text-slate-500">
                                 Already have an account? <Link to="/login" className="text-emerald-600 font-bold hover:underline">Sign In</Link>
                             </p>

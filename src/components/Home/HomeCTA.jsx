@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import Button from '../Button';
 
 const HomeCTA = () => {
-    const navigate = useNavigate();
-
     return (
         <section className="py-24 px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
@@ -19,18 +17,20 @@ const HomeCTA = () => {
                             Join thousands of professionals who have found their dream roles and companies that have built world-class teams with Amdox.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                            <button
-                                onClick={() => navigate('/dashboard')}
-                                className="px-10 py-5 bg-white text-green-700 font-bold rounded-2xl hover:bg-green-50 hover:scale-105 transition-all shadow-xl flex items-center gap-2"
+                            <Button
+                                to="/dashboard/seeker"
+                                variant="text"
+                                className="px-10 py-5 bg-white text-green-700 hover:bg-green-50 hover:scale-105 shadow-xl font-bold rounded-2xl h-auto"
                             >
                                 Find Jobs Now
-                            </button>
-                            <button
-                                onClick={() => navigate('/employer')}
-                                className="px-10 py-5 bg-green-800/50 backdrop-blur-sm border border-white/20 text-white font-bold rounded-2xl hover:bg-green-800/70 hover:scale-105 transition-all flex items-center gap-2"
+                            </Button>
+                            <Button
+                                to="/dashboard/employer"
+                                variant="text"
+                                className="px-10 py-5 bg-white text-green-700 hover:bg-green-50 hover:scale-105 shadow-xl font-bold rounded-2xl h-auto"
                             >
                                 I'm Hiring
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

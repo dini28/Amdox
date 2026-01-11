@@ -10,7 +10,7 @@ import NotificationsList from '../components/dashboard/messages/NotificationsLis
 const Messages = () => {
     const [activeTab, setActiveTab] = useState('messages');
     const location = useLocation();
-    const isEmployer = location.pathname.startsWith('/employer');
+    const isEmployer = location.pathname.includes('employer');
 
     return (
         <DashboardContainer>

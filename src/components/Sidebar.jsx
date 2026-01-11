@@ -8,9 +8,11 @@ import {
     Briefcase,
     Search,
     Users,
-    Zap
+    Zap,
+    Plus
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const NavItem = ({ icon: Icon, label, badge, isActive, onClick }) => {
     return (
@@ -44,25 +46,26 @@ const NavItem = ({ icon: Icon, label, badge, isActive, onClick }) => {
 };
 
 const Sidebar = () => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-
-    const isEmployer = ['/employer', '/company-profile', '/post-job'].some(path => location.pathname.startsWith(path));
+    const isEmployer = user?.role === 'employer' || ['/dashboard/employer', '/profile/employer', '/employer', '/candidates'].some(path => location.pathname.startsWith(path));
 
     const seekerItems = [
-        { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-        { icon: Search, label: 'Explore', path: '/explore' },
-        { icon: User, label: 'Profile', path: '/profile' },
-        { icon: MessageSquare, label: 'Messages', badge: '3', path: '/messages' },
+        { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard/seeker' },
+        { icon: Search, label: 'Explore', path: '/explorejobs' },
+        { icon: User, label: 'Profile', path: '/profile/seeker' },
+        { icon: MessageSquare, label: 'Messages', badge: '3', path: '/messages/seeker' },
         { icon: Bookmark, label: 'Saved', path: '/saved' },
         { icon: Settings, label: 'Settings', path: '/settings' },
     ];
 
     const employerItems = [
-        { icon: Briefcase, label: 'Employer Hub', path: '/employer' },
-        { icon: User, label: 'Company Profile', path: '/company-profile' },
+        { icon: Briefcase, label: 'Employer Hub', path: '/dashboard/employer' },
+        { icon: Plus, label: 'Post a Job', path: '/employer/postjob' },
+        { icon: User, label: 'Company Profile', path: '/profile/employer' },
         { icon: Users, label: 'Candidates', path: '/candidates' },
-        { icon: MessageSquare, label: 'Messages', badge: '12', path: '/messages' },
+        { icon: MessageSquare, label: 'Messages', badge: '12', path: '/messages/employer' },
         { icon: Settings, label: 'Settings', path: '/settings' },
     ];
 
